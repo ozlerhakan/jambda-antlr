@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:c="http://www.springframework.org/schema/c"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                           http://www.springframework.org/schema/beans/spring-beans-4.1.xsd">
+
+    <!-- bean definitions -->
+
+    <bean id="sb"
+          class="java.lang.StringBuilder"/>
+
+    <bean id="builder"
+          class="jambda.lang.builder.JavaBuilder"
+          c:builder-ref="sb" >
+    </bean>
+
+    <bean id="ast"
+          class="jambda.lang.ast.ASTNativeListener"
+          c:builder-ref="builder">
+    </bean>
+
+    <bean id="compiler"
+          class="jambda.lang.compile.JambdaCompiler"
+          c:source-ref="builder">
+    </bean>
+
+</beans>

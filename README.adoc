@@ -1,0 +1,172 @@
+## Jambda Language
+
+This is just a demo project to enlighten the role of ANTLR tool in a Java project with other well-known techniques.
+
+**Technologies:**
+
+.	Java 8
+.	AspectJ
+.   ANTLR v4
+.   Spring Framework
+	
+### What's included:
+
+[source,xml]
+Jambda
++---src
+|   +---main
+|   |   +---antlr4
+|   |   |   \---jambda
+|   |   |       \---lang
+|   |   |           \---def
+|   |   |                   Jambda.g4
+|   |   |
+|   |   +---aspect
+|   |   |   \---jambda
+|   |   |       \---lang
+|   |   |           \---aspects
+|   |   |                   ExceptionHandlerAspect.aj
+|   |   |                   SystemLoadAspect.aj
+|   |   |
+|   |   +---java
+|   |   |   \---jambda
+|   |   |       \---lang
+|   |   |           +---ast
+|   |   |           |       ASTNativeListener.java
+|   |   |           |       ASTNativeVisitor.java
+|   |   |           |
+|   |   |           +---builder
+|   |   |           |       Builder.java
+|   |   |           |       CSharpBuilder.java
+|   |   |           |       JavaBuilder.java
+|   |   |           |       Modifier.java
+|   |   |           |
+|   |   |           +---compile
+|   |   |           |       DispatchJavaFileManager.java
+|   |   |           |       JambdaCompiler.java
+|   |   |           |       JavaSourceFromString.java
+|   |   |           |
+|   |   |           +---exception
+|   |   |           |       DuplicateMethodException.java
+|   |   |           |       DuplicateNameException.java
+|   |   |           |       DuplicateVariableException.java
+|   |   |           |       IllegalSymbolException.java
+|   |   |           |       NoSuchNameException.java
+|   |   |           |
+|   |   |           +---handler
+|   |   |           |       Error.java
+|   |   |           |       ExceptionTracker.java
+|   |   |           |       JambdaSyntaxErrorListener.java
+|   |   |           |
+|   |   |           +---main
+|   |   |           |       Startup.java
+|   |   |           |
+|   |   |           \---symbol
+|   |   |                   GlobalScope.java
+|   |   |                   LocalScope.java
+|   |   |                   MethodSymbol.java
+|   |   |                   Scope.java
+|   |   |                   Scopeable.java
+|   |   |                   Symbol.java
+|   |   |                   VariableSymbol.java
+|   |   |
+|   |   \---resources
+|   |           demo.jambda
+|   |           jambdaBeans.xml
+|   |
+|   \---test
+|       +---java
+|       |   \---jambda
+|       |       \---tests
+|       |               ASTNativeChild.java
+|       |               JTest.java
+|       |
+|       \---resources
+|               MyClass.jambda
+|
+\---target
+    \---generated-sources
+        \---antlr4
+            |   Jambda.tokens
+            |   JambdaLexer.tokens
+            |
+            \---jambda
+                \---lang
+                    \---def
+                            JambdaBaseListener.java
+                            JambdaBaseVisitor.java
+                            JambdaLexer.java
+                            JambdaListener.java
+                            JambdaParser.java
+                            JambdaVisitor.java
+----
+
+### How to run
+
+	$ mvn clean install exec:java
+
+### A code snippet of the Jambda language
+
+[source,xml]
+----
+>> a single-line comment
+package jambda:lang:test                                            
+import java:util:ArrayList
+
+/>
+  Created by Hakan on 11/01/2015.
+</
+public MyClass:class -> {                                          
+
+    integer count -> 0
+    static string  name -> "1000"
+    boolean isEnable -> true                                        
+    arrayList myList -> <string>
+
+    public myMethod((string item) -> {                             
+        count++
+        print(count)(":")(item)                                     
+        println()                                                   
+    });
+
+    >> overloaded methods : doSomething() and doSomething(string)
+    doSomething(() -> {
+        boolean ok -> isEnable
+        if(isEnable)
+            myList.each(this::myMethod)                             
+        println(ok)
+    });
+
+    doSomething((string name) -> {
+        myList.eachPrintln(item -> { item + ":" + name })           
+    });
+
+    static doIt(()->{
+        println(name)
+        return name
+    });
+
+    >> execution point of the MyClass
+    execution((string... args)-> {                                  
+        MyClass my -> new()
+
+        my.myList.add("Ali")("Veli")                                
+        my.doSomething()
+        my.doSomething("Kodcu.com")
+
+        doIt()
+    });
+}
+----
+
+### Result
+
+[source,xml]
+----
+1:Ali
+2:Veli
+true
+Ali:Kodcu.com
+Veli:Kodcu.com
+1000
+----

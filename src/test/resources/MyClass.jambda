@@ -1,0 +1,43 @@
+>> a single-line comment
+>>package com:jambda:definition
+import java:util:ArrayList
+
+/>
+  Created by Hakan on 11/01/2015.
+</
+public MyClass:class -> {
+
+    integer count -> 0
+    string  name -> "12"
+    boolean isEnable -> true
+    arrayList myList -> <string>
+
+    public myMethod((string item) -> {
+        count++
+        print(count)(":")(item)
+        println()
+    });
+
+    >> overloaded methods : doSomething() and doSomething(string)
+    public doSomething(() -> {
+        boolean ok -> isEnable
+        if(isEnable)
+          myList.each(this::myMethod)
+        println(ok)
+    });
+
+    doSomething((string name) -> {
+        myList.eachPrintln(item -> { item + ":" + name })
+    });
+
+    doIt(()->{
+        return count
+    });
+
+    execution((string... args)-> {
+        >>myMethod()
+        myList.add("Ali")("Veli")
+        this.doSomething()
+        doSomething("Kodcu.com")
+    });
+}
